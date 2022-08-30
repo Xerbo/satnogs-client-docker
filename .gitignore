@@ -1,4 +1,4 @@
-flowgraphs/*.grc
-flowgraphs/*.py
+flowgraphs/*
+!flowgraphs/README.md
 config/*
 !config/default
