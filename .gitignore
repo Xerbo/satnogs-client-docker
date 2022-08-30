@@ -1,3 +1,4 @@
-flowgraphs/*
+flowgraphs/*.grc
+flowgraphs/*.py
 config/*
 !config/default
