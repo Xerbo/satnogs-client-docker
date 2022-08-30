@@ -6,7 +6,7 @@ RUN echo deb http://download.opensuse.org/repositories/home:/librespace:/satnogs
 RUN wget -qO - http://download.opensuse.org/repositories/home:/librespace:/satnogs/Debian_10/Release.key | DEBIAN_FRONTEND=noninteractive apt-key --keyring /etc/apt/trusted.gpg.d/satnogs.gpg add -
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install supervisor software-properties-common libhamlib-utils vorbis-tools unzip git python3-pip python3-urllib3 python3-certifi python3-chardet python3-cycler python3-decorator python3-idna python3-kiwisolver python3-pyparsing python3-tz python3-tzlocal python3-libhamlib2 rtl-sdr satnogs-flowgraphs gr-soapy gr-satnogs
-RUN pip3 install satnogs-client
+RUN pip3 install -U pip && pip3 install satnogs-client
 
 RUN groupadd -g 995 satnogs && useradd -g satnogs -G dialout,plugdev -m -d /var/lib/satnogs -s /bin/false -u 999 satnogs
 ADD docker-entrypoint.sh /

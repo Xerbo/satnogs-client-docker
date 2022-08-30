@@ -17,7 +17,7 @@ cp config/default config/YOUR_STATION
 
 This image contains extra applications/features which may or may not be useful to you.
 
-Use `--build-args` to control what is build, currently it supports `BUILD_MIRISDR`, `BUILD_APTDEC` and `BUILD_MEDET`.
+Use `--build-arg` to control what is build, currently it supports `BUILD_MIRISDR`, `BUILD_APTDEC` and `BUILD_MEDET`.
 
 ```sh
 docker build -f Dockerfile.plus -t satnogs-client-plus:latest .
