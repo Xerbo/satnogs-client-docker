@@ -1,0 +1,36 @@
+FROM satnogs-client:latest
+USER root
+ARG BUILD_MIRISDR=false
+ARG BUILD_APTDEC=true
+ARG BUILD_MEDET=true
+
+# MiriSDR
+RUN if [ ! "$BUILD_MIRISDR" = "true" ]; then exit 0; fi &&\
+    apt-get install -y cmake gcc libusb-1.0-0-dev libsoapysdr-dev &&\
+    git clone -b v2.0.0 https://github.com/f4exb/libmirisdr-4 && cd libmirisdr-4 &&\
+    cmake -B build -DCMAKE_INSTALL_PREFIX=/usr &&\
+    cmake --build build --target install &&\
+    cd .. && rm -r libmirisdr-4 &&\
+    git clone https://github.com/ericek111/SoapyMiri && cd SoapyMiri &&\
+    cmake -B build -DCMAKE_BUILD_TYPE=Release &&\
+    cmake --build build --target install &&\
+    cd .. && rm -r SoapyMiri
+
+# aptdec
+RUN if [ ! "$BUILD_APTDEC" = "true" ]; then exit 0; fi &&\
+    apt-get install -y cmake gcc libpng-dev libsndfile-dev &&\
+    git clone --recursive https://github.com/Xerbo/aptdec && cd aptdec &&\
+    cmake -B build -DCMAKE_BUILD_TYPE=Release &&\
+    cmake --build build --target install &&\
+    cd .. && rm -r aptdec
+
+# medet
+RUN if [ ! "$BUILD_MEDET" = "true" ]; then exit 0; fi &&\
+    apt-get install -y fpc &&\
+    git clone https://github.com/artlav/meteor_decoder && cd meteor_decoder &&\
+    chmod +x build_medet.sh && ./build_medet.sh &&\
+    cp medet /usr/local/bin/medet &&\
+    cd .. && rm -r meteor_decoder
+
+# Revert user back to satnogs
+USER satnogs

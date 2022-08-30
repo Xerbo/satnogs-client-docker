@@ -1,0 +1,3 @@
+flowgraphs/*
+config/*
+!config/default

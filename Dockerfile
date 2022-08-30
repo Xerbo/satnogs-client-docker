@@ -9,12 +9,11 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install supervis
 RUN pip3 install satnogs-client
 
 RUN groupadd -g 995 satnogs && useradd -g satnogs -G dialout,plugdev -m -d /var/lib/satnogs -s /bin/false -u 999 satnogs
-ADD entrypoint.sh /
+ADD docker-entrypoint.sh /
 
 WORKDIR /var/lib/satnogs
 USER satnogs
 RUN mkdir -p /var/lib/satnogs/.gnuradio/prefs/ && echo -n "gr::vmcircbuf_mmap_shm_open_factory" > /var/lib/satnogs/.gnuradio/prefs/vmcircbuf_default_factory
 
-ENTRYPOINT ["bash", "/entrypoint.sh"]
+ENTRYPOINT ["bash", "/docker-entrypoint.sh"]
 CMD ["satnogs-client"]
-
