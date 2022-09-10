@@ -19,5 +19,6 @@ docker run -d \
            --tmpfs /tmp \
            -v "$(pwd)/config/$1:/.env:ro" \
            -v "$(pwd)/satnogs-post:/usr/bin/satnogs-post:ro" \
+           -v "$(pwd)/satnogs-pre:/usr/bin/satnogs-pre:ro" \
            -v "$(pwd)/flowgraphs:/usr/bin/flowgraphs" \
            "$IMAGE_NAME"
