@@ -7,7 +7,7 @@ Tested with rtl-sdr, MiriSDR and hackrf.
 
 ````sh
 git clone https://github.com/Xerbo/satnogs-client-docker && cd satnogs-client-docker
-docker build -t xerbo/satnogs-client:latest .
+docker build -t knegge/satnogs-client:latest .
 cp config/default config/YOUR_STATION
 # Edit config/YOUR_STATION with your station details
 ./up YOUR_STATION

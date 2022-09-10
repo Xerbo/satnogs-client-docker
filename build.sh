@@ -1,4 +1,4 @@
 #!/bin/bash
-docker build -t xerbo/satnogs-client:latest .
+docker build -t knegge/satnogs-client:latest .
 # --no-cache
 

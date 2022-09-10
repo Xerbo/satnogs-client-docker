@@ -1,12 +1,16 @@
-FROM satnogs-client:latest
+FROM knegge/satnogs-client:latest
 USER root
 ARG BUILD_MIRISDR=false
 ARG BUILD_APTDEC=true
 ARG BUILD_MEDET=true
+ARG BUILD_MONITOR=true
+ARG BUILD_LEANHRPT=false
+
+RUN apt-get update
 
 # MiriSDR
 RUN if [ ! "$BUILD_MIRISDR" = "true" ]; then exit 0; fi &&\
-    apt-get install -y cmake gcc libusb-1.0-0-dev libsoapysdr-dev &&\
+    apt-get install -y cmake gcc g++ libusb-1.0-0-dev libsoapysdr-dev &&\
     git clone -b v2.0.0 https://github.com/f4exb/libmirisdr-4 && cd libmirisdr-4 &&\
     cmake -B build -DCMAKE_INSTALL_PREFIX=/usr &&\
     cmake --build build --target install &&\
@@ -31,6 +35,28 @@ RUN if [ ! "$BUILD_MEDET" = "true" ]; then exit 0; fi &&\
     chmod +x build_medet.sh && ./build_medet.sh &&\
     cp medet /usr/local/bin/medet &&\
     cd .. && rm -r meteor_decoder
+
+# satnogs-monitor
+RUN if [ ! "$BUILD_MONITOR" = "true" ]; then exit 0; fi &&\
+    git clone https://github.com/cubehub/libgpredict.git && cd libgpredict &&\
+    cmake -B build -DCMAKE_BUILD_TYPE=Release &&\
+    cmake --build build --target install &&\
+    cd .. && rm -r libgpredict &&\
+    wget https://github.com/wose/satnogs-monitor/releases/download/0.4.1/satnogs-monitor_0.4.1_amd64.deb &&\
+    dpkg -i satnogs-monitor_0.4.1_amd64.deb &&\
+    rm satnogs-monitor_0.4.1_amd64.deb
+
+# LeanHRPT Decode
+RUN if [ ! "$BUILD_LEANHRPT" = "true" ]; then exit 0; fi &&\
+    apt-get install -y cmake gcc g++ qtbase5-dev libmuparser-dev libshp-dev &&\
+    git clone -b v2.0.0 https://github.com/la1k/libpredict && cd libpredict &&\
+    cmake -B build -DCMAKE_BUILD_TYPE=Release &&\
+    cmake --build build --target install &&\
+    cd .. && rm -r libpredict &&\
+    git clone https://github.com/Xerbo/LeanHRPT-Decode && cd LeanHRPT-Decode &&\
+    cmake -B build -DCMAKE_BUILD_TYPE=Release &&\
+    cmake --build build --target install &&\
+    cd .. && rm -r LeanHRPT-Decode
 
 # Revert user back to satnogs
 USER satnogs

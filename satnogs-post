@@ -1,3 +1,2 @@
 #!/usr/bin/env bash
-cd /tmp/.satnogs/data
 # This script runs after every observation
