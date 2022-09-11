@@ -14,6 +14,7 @@ if [ ! -z "$2" ]; then
 fi
 
 docker run -d \
+           --restart always
            --name "satnogs-$1" \
            --device=/dev/bus/usb/ \
            --tmpfs /tmp \
