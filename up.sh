@@ -8,7 +8,7 @@ if [ ! -f "config/$1" ]; then
     exit
 fi
 
-IMAGE_NAME="satnogs-client:latest"
+IMAGE_NAME="knegge/satnogs-client:latest"
 if [ ! -z "$2" ]; then
     IMAGE_NAME="$2"
 fi

@@ -17,7 +17,13 @@ cp config/default config/YOUR_STATION
 
 This image contains extra applications/features which may or may not be useful to you.
 
-Use `--build-arg` to control what is build, currently it supports `BUILD_MIRISDR`, `BUILD_APTDEC` and `BUILD_MEDET`.
+Use `--build-arg` to control what is build, currently it supports:
+
+- `BUILD_MIRISDR`
+- `BUILD_APTDEC` (on by default)
+- `BUILD_MEDET` (on by default)
+- `BUILD_MONITOR` (on by default)
+- `BUILD_LEANHRPT`.
 
 ```sh
 docker build -f Dockerfile.plus -t xerbo/satnogs-client-plus:latest .
