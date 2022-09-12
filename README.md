@@ -1,7 +1,7 @@
 # satnogs-client-docker
 Run satnogs-client inside one or more docker containers.
 
-Tested with rtl-sdr, MiriSDR and hackrf.
+Tested with rtl-sdr, MiriSDR and hackrf. You will need to copy the udev files to the host (or install the driver) for permissions to be correct.
 
 ## Running
 
@@ -14,6 +14,8 @@ cp config/default config/YOUR_STATION
 ````
 
 ## "Plus" image
+
+**NOTE: This image only works on x86_64 platforms**
 
 This image contains extra applications/features which may or may not be useful to you.
 

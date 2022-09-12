@@ -30,33 +30,29 @@ RUN if [ ! "$BUILD_APTDEC" = "true" ]; then exit 0; fi &&\
 
 # medet
 RUN if [ ! "$BUILD_MEDET" = "true" ]; then exit 0; fi &&\
-    apt-get install -y fpc &&\
-    git clone https://github.com/artlav/meteor_decoder && cd meteor_decoder &&\
-    chmod +x build_medet.sh && ./build_medet.sh &&\
-    cp medet /usr/local/bin/medet &&\
-    cd .. && rm -r meteor_decoder
+    wget https://orbides.org/etc/medet/medet_190825_lin64.tar.gz &&\
+    tar -xf medet_190825_lin64.tar.gz &&\
+    mv medet /usr/local/bin/medet &&\
+    rm medet_190825_lin64.tar.gz readme.txt
 
 # satnogs-monitor
 RUN if [ ! "$BUILD_MONITOR" = "true" ]; then exit 0; fi &&\
+    apt-get install -y cmake gcc g++ glib2.0 &&\
     git clone https://github.com/cubehub/libgpredict.git && cd libgpredict &&\
     cmake -B build -DCMAKE_BUILD_TYPE=Release &&\
     cmake --build build --target install &&\
     cd .. && rm -r libgpredict &&\
     wget https://github.com/wose/satnogs-monitor/releases/download/0.4.1/satnogs-monitor_0.4.1_amd64.deb &&\
-    dpkg -i satnogs-monitor_0.4.1_amd64.deb &&\
+    apt install -y ./satnogs-monitor_0.4.1_amd64.deb &&\
     rm satnogs-monitor_0.4.1_amd64.deb
 
 # LeanHRPT Decode
 RUN if [ ! "$BUILD_LEANHRPT" = "true" ]; then exit 0; fi &&\
-    apt-get install -y cmake gcc g++ qtbase5-dev libmuparser-dev libshp-dev &&\
-    git clone -b v2.0.0 https://github.com/la1k/libpredict && cd libpredict &&\
-    cmake -B build -DCMAKE_BUILD_TYPE=Release &&\
-    cmake --build build --target install &&\
-    cd .. && rm -r libpredict &&\
-    git clone https://github.com/Xerbo/LeanHRPT-Decode && cd LeanHRPT-Decode &&\
-    cmake -B build -DCMAKE_BUILD_TYPE=Release &&\
-    cmake --build build --target install &&\
-    cd .. && rm -r LeanHRPT-Decode
+    wget https://github.com/Xerbo/libpredict-deb/releases/download/master/libpredict-2.0.0.deb &&\
+    wget https://github.com/Xerbo/LeanHRPT-Decode/releases/download/v0.8.0-rc2/debian_bullseye_amd64.deb &&\
+    apt-get install -y ./libpredict-2.0.0.deb &&\
+    apt-get install -y ./debian_bullseye_amd64.deb &&\
+    rm libpredict-2.0.0.deb debian_bullseye_amd64.deb
 
 # Revert user back to satnogs
 USER satnogs
